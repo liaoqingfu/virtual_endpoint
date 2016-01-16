@@ -50,7 +50,8 @@ int Nalu2Rtp_H264::pack_and_send(unsigned char *raw_data, int len, unsigned int 
     }
 
 
-    if(len <= RTP_FRAGMENT_SIZE)
+
+    if(nc_len - sizeof(Nalu_Type) <= RTP_FRAGMENT_SIZE)
     {
         rtp_header->sequence = htons(++sequence);
         memcpy(_rtp_buf + RTP_FIXED_HEADER_SIZE, nc_pos, nc_len);
@@ -60,6 +61,8 @@ int Nalu2Rtp_H264::pack_and_send(unsigned char *raw_data, int len, unsigned int 
 
 
     Nalu_Type* nalu_type = (Nalu_Type*)nc_pos;
+    nc_len -= sizeof(Nalu_Type);
+
     Fu_Indicator fu_indicator;
     Fu_Header   fu_header;
 
@@ -92,7 +95,7 @@ int Nalu2Rtp_H264::pack_and_send(unsigned char *raw_data, int len, unsigned int 
         }
 
         int rtp_len = RTP_FIXED_HEADER_SIZE;
-        memcpy(_rtp_buf + rtp_len, &fu_indicator, sizeof(fu_indicator));
+        memcpy(_rtp_buf + rtp_len, &fu_indicator, sizeof(Fu_Indicator));
         rtp_len += sizeof(Fu_Indicator);
         memcpy(_rtp_buf+rtp_len, &fu_header, sizeof(Fu_Header));
         rtp_len += sizeof(Fu_Header);

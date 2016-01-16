@@ -26,7 +26,7 @@ class Video_Render_Task : public  ACE_Task_Ex<ACE_MT_SYNCH, YUV>
 {
 public:
     Video_Render_Task(QWidget *widget);
-    ~Video_Render_Task();
+    virtual ~Video_Render_Task();
 
     int start();
     void stop();

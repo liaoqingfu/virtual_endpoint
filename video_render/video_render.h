@@ -16,7 +16,7 @@ public:
     explicit Video_Render(YUV_Widget* yuv_widget = 0);
     explicit Video_Render(YUV_GL_Widget* yuv_widget = 0);
     explicit Video_Render(OGL_Widget* ogl_widget = 0);
-    ~Video_Render();
+    virtual ~Video_Render();
 
     /**
      * @brief on_yuv_data_arrive 渲染视频数据
