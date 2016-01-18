@@ -16,8 +16,10 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_start_encdeo_pbt_clicked();
+    void on_start_encode_pbt_clicked();
     void on_stop_encode_pbt_clicked();
+    void on_start_decode_pbt_clicked();
+    void on_stop_decode_pbt_clicked();
 
 private:
     Ui::MainWindow *ui;

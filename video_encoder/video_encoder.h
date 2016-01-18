@@ -8,7 +8,7 @@ class Video_Encoder
 {
     friend class Video_Encoder_Factory;
 public:
-    typedef std::function<int(unsigned char*, int,int, unsigned int)> NALU_CB;
+    typedef std::function<int(unsigned char*, int len, int type, unsigned int timestamp)> NALU_CB;
 
     Video_Encoder():_insert_idr(false){}
     virtual ~Video_Encoder() {}

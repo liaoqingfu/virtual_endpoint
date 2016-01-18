@@ -37,27 +37,9 @@ int Rtp_Recv_Handler::start(unsigned int recv_port, int recv_ip)
 
 void Rtp_Recv_Handler::stop()
 {
+    ACE_DEBUG( (LM_DEBUG, ACE_TEXT("%s: !!!!!!!!!!\n"), __FUNCTION__) );
     if( _sock_fd != -1 )
     {
-        ACE_DEBUG( (LM_DEBUG, ACE_TEXT("%s: close sock_fd\n"), __FUNCTION__) );
-
-        sockaddr_in addr;
-        memset(&addr, 0, sizeof(addr));
-        socklen_t addr_len = sizeof(addr);
-
-        int rc = getsockname(_sock_fd, (struct sockaddr*)&addr, &addr_len);
-        if(rc != 0)
-        {
-            perror("getsockname");
-            return;
-        }
-
-        rc = sendto(_sock_fd, "exit", sizeof("exit"), 0, (const sockaddr*)&addr, addr_len);
-        if(rc <= 0)
-        {
-            ACE_DEBUG( (LM_DEBUG, ACE_TEXT("%s: send exit fail!!!!!!!!!!!!!!!!!!!!\n"), __FUNCTION__) );
-        }
-
         shutdown(_sock_fd, SHUT_RD);
         close(_sock_fd);
         _sock_fd = -1;
@@ -90,18 +72,9 @@ int Rtp_Recv_Handler::svc()
             _sock_fd = -1;
             break;
         }
-        else if(sizeof("exit") == len)
-        {
-            if(memcmp("exit", recv_buf, sizeof("exit")) == 0)
-            {
-                break;
-            }
-        }
-
         rc = rtp_parse(recv_buf, len, recv_buf, len);
         if( rc )
         {
-//            fprintf(stderr, "%s: rtp_parse  len=%d\n", __FUNCTION__, len);
             (*_hander_cb)(recv_buf, len);
         }
     }

@@ -62,7 +62,7 @@ int Video_Render_Task::svc()
 
         if( !yuv )
         {
-            ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:active close msg(nalu_buf == NULL) error!\n"), __PRETTY_FUNCTION__));
+            ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:active close msg(yuv == NULL) error!\n"), __PRETTY_FUNCTION__));
             break;
         }
 

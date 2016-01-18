@@ -16,6 +16,16 @@
 #define RTP_H264_FU_A         28
 #define RTP_H264_FU_B         29
 
+enum
+{
+    STAP_A = 24,
+    STAP_B = 25,
+    MTAP16 = 26,
+    MTAP24 = 27,
+    FU_A   = 28,
+    FU_B   = 29
+};
+
 
 /*h265---------------------------*/
 #define RTP_HEVC_PAYLOAD_HEADER_SIZE       2
