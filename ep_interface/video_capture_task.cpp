@@ -51,7 +51,6 @@ int Video_Capture_Task::svc()
     while( _is_run )
     {
         (*_video_capture)(_handler_cb);
-//        ACE_DEBUG( (LM_ERROR, ACE_TEXT("%s: ************\n"), __PRETTY_FUNCTION__) );
     }
 
     return 0;

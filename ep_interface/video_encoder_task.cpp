@@ -52,8 +52,6 @@ int Video_Encoder_Task::svc()
         yuv[2] = (unsigned char*)encoder_buf->buf_2;
         (*_video_encoder)(yuv, encoder_buf->linesize);
         _allocator.free(encoder_buf);
-
-        ACE_DEBUG( (LM_ERROR, ACE_TEXT("%s: ************\n"), __PRETTY_FUNCTION__) );
     }
 
     return 0;
@@ -61,7 +59,6 @@ int Video_Encoder_Task::svc()
 
 int Video_Encoder_Task::operator ()(int w, int h, char **yuv, int *linesize)
 {
-    ACE_DEBUG( (LM_ERROR, ACE_TEXT("%s: ************\n"), __PRETTY_FUNCTION__) );
     Video_Encoder_Buf* encoder_buf = (Video_Encoder_Buf*)_allocator.malloc();
     if( !encoder_buf || !yuv || !linesize )
     {

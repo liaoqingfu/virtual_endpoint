@@ -34,6 +34,11 @@ void Nalu2Rtp_Handler::stop()
     wait();
 }
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 int Nalu2Rtp_Handler::svc()
 {
     Nalu_Buf* nalu_buf = NULL;
@@ -52,10 +57,11 @@ int Nalu2Rtp_Handler::svc()
             break;
         }
 
+        static int fd = ::open("xxx.nalu", O_CREAT | O_TRUNC | O_RDWR, 0666);
+        write(fd, nalu_buf->buf, nalu_buf->len);
+
         pack_and_send(nalu_buf->buf, nalu_buf->len, nalu_buf->timestamp);
         _allocator.free(nalu_buf);
-
-        ACE_DEBUG( (LM_ERROR, ACE_TEXT("%s: ************\n"), __PRETTY_FUNCTION__) );
     }
 
     ACE_DEBUG( (LM_ERROR, ACE_TEXT("%s: thread exit!!!!\n"), __PRETTY_FUNCTION__) );

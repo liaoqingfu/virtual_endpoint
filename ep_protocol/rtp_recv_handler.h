@@ -20,7 +20,11 @@ public:
 
     virtual int svc (void);
 
-    virtual bool rtp_parse(unsigned char* rtp_buf, int rtp_buf_len, unsigned char* out_buf, int& out_buf_len) = 0;
+    virtual bool rtp_parse(unsigned char* rtp_buf, int rtp_buf_len) = 0;
+
+protected:
+    unsigned char*      _nalu_buf;
+    int         _nalu_len;
 
 private:
     int             _sock_fd;

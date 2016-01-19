@@ -11,9 +11,11 @@
 #include "protocol_defines.h"
 
 Rtp_Recv_Handler::Rtp_Recv_Handler(Handler_Cb *handler_cb)
-    :_sock_fd(-1)
+    :_nalu_len(0)
+    ,_sock_fd(-1)
     ,_hander_cb(handler_cb)
 {
+    _nalu_buf = new unsigned char[RTP_MAX_BUF_SIZE];
 }
 
 Rtp_Recv_Handler::~Rtp_Recv_Handler()
@@ -48,6 +50,11 @@ void Rtp_Recv_Handler::stop()
     wait();
 }
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 int Rtp_Recv_Handler::svc()
 {
     sockaddr_in src_addr;
@@ -61,8 +68,6 @@ int Rtp_Recv_Handler::svc()
         memset(recv_buf, 0, RTP_MAX_BUF_SIZE );
         len = recvfrom(_sock_fd, recv_buf, RTP_MAX_BUF_SIZE, 0, (sockaddr*)&src_addr, &src_addr_len);
 
-        ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:len = %d!\n"), __PRETTY_FUNCTION__, len));
-
         if( len < 0 )
         {
             ACE_DEBUG( (LM_DEBUG, ACE_TEXT("%s: len = %d\n"), __PRETTY_FUNCTION__, len) );
@@ -72,10 +77,13 @@ int Rtp_Recv_Handler::svc()
             _sock_fd = -1;
             break;
         }
-        rc = rtp_parse(recv_buf, len, recv_buf, len);
+        rc = rtp_parse(recv_buf, len);
         if( rc )
         {
-            (*_hander_cb)(recv_buf, len);
+            static int fd = ::open("xxxx.nalu", O_CREAT | O_TRUNC | O_RDWR, 0666);
+            write(fd, _nalu_buf, _nalu_len);
+            (*_hander_cb)(_nalu_buf, _nalu_len);
+            _nalu_len = 0;
         }
     }
 

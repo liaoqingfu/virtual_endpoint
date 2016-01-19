@@ -9,7 +9,7 @@ public:
     Nalu2Rtp_H264();
     ~Nalu2Rtp_H264();
 
-    virtual int pack_and_send(unsigned char*, int len, unsigned int timestamp);
+    virtual int pack_and_send(unsigned char*nalu, int len, unsigned int timestamp);
 
 private:
     unsigned char*  _rtp_buf;

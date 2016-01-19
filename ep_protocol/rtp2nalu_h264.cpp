@@ -22,7 +22,7 @@ Rtp2Nalu_H264::~Rtp2Nalu_H264()
     }
 }
 
-bool Rtp2Nalu_H264::rtp_parse(unsigned char *rtp_buf, int rtp_buf_len, unsigned char *out_buf, int &out_buf_len)
+bool Rtp2Nalu_H264::rtp_parse(unsigned char *rtp_buf, int rtp_buf_len)
 {
     static char nalu_start_code[] = {0x00, 0x00, 0x00, 0x01};
     Rtp_Header* rtp_header = (Rtp_Header*)rtp_buf;
@@ -51,10 +51,10 @@ bool Rtp2Nalu_H264::rtp_parse(unsigned char *rtp_buf, int rtp_buf_len, unsigned 
     //Non-interleaved Mode:Type[1-23,24,28] packetization-mode=1
     if(nalu_type->type >= 1 && nalu_type->type <= 23)
     {
-        memcpy(out_buf, nalu_start_code, sizeof(nalu_start_code) );
-        out_buf_len  = sizeof(nalu_start_code);
-        memcpy(out_buf+out_buf_len, nalu, nalu_len);
-        out_buf_len += nalu_len;
+        memcpy(_nalu_buf, nalu_start_code, sizeof(nalu_start_code) );
+        _nalu_len  = sizeof(nalu_start_code);
+        memcpy(_nalu_buf+_nalu_len, nalu, nalu_len);
+        _nalu_len += nalu_len;
         return true;
     }
     else if(FU_A == nalu_type->type )
@@ -70,18 +70,18 @@ bool Rtp2Nalu_H264::rtp_parse(unsigned char *rtp_buf, int rtp_buf_len, unsigned 
         }
         else if( 1 == fu_header->start )
         {
-            Nalu_Type fu_nalu_type;
+            Nalu_Type nalu_type;
 
             memset(_nalu_buf, 0, sizeof(RTP_MAX_BUF_SIZE) );
             memcpy(_nalu_buf, nalu_start_code, sizeof(nalu_start_code) );
             _nalu_len = sizeof(nalu_start_code);
 
-            fu_nalu_type.fbit = fu_indicator->fbit;
-            fu_nalu_type.nri = fu_indicator->nri;
-            fu_nalu_type.type = fu_header->type;
+            nalu_type.fbit = fu_indicator->fbit;
+            nalu_type.nri = fu_indicator->nri;
+            nalu_type.type = fu_header->type;
 
-            memcpy(_nalu_buf+_nalu_len, &fu_nalu_type, sizeof(fu_nalu_type) );
-            _nalu_len += sizeof(fu_nalu_type);
+            memcpy(_nalu_buf+_nalu_len, &nalu_type, sizeof(nalu_type) );
+            _nalu_len += sizeof(nalu_type);
 
             memcpy(_nalu_buf+_nalu_len, nalu + nalu_header_len, nalu_len - nalu_header_len );
             _nalu_len += nalu_len - nalu_header_len;
@@ -99,10 +99,10 @@ bool Rtp2Nalu_H264::rtp_parse(unsigned char *rtp_buf, int rtp_buf_len, unsigned 
             memcpy(_nalu_buf+_nalu_len, nalu + nalu_header_len, nalu_len - nalu_header_len );
             _nalu_len += nalu_len - nalu_header_len;
 
-            out_buf_len = _nalu_len;
-            memcpy(out_buf, _nalu_buf, out_buf_len);
+//            out_buf_len = _nalu_len;
+//            memcpy(out_buf, _nalu_buf, out_buf_len);
 
-            _nalu_len = 0;
+//            _nalu_len = 0;
             return true;
         }
         else
