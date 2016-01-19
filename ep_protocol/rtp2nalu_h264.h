@@ -10,10 +10,6 @@ public:
     virtual ~Rtp2Nalu_H264();
 
     virtual bool rtp_parse(unsigned char* rtp_buf, int rtp_buf_len);
-
-private:
-    unsigned char*      _nalu_buf;
-    int         _nalu_len;
 };
 
 #endif // RTP2NALU_H264_H

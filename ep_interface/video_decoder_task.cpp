@@ -66,7 +66,6 @@ int Video_Decoder_Task::svc()
 
 bool Video_Decoder_Task::operator ()(unsigned char *nalu_buf, int nalu_len)
 {
-    ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:nalu_len = %d!\n"), __PRETTY_FUNCTION__, nalu_len));
     if( !nalu_buf )
     {
         ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:nalu_buf is NULL!\n"), __PRETTY_FUNCTION__));

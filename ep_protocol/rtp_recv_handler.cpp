@@ -58,7 +58,7 @@ void Rtp_Recv_Handler::stop()
 int Rtp_Recv_Handler::svc()
 {
     sockaddr_in src_addr;
-    socklen_t src_addr_len;
+    socklen_t src_addr_len = sizeof(sockaddr_in);
     int len = -1;
     bool rc = false;
     unsigned char* recv_buf = new unsigned char[RTP_MAX_BUF_SIZE];

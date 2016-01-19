@@ -68,7 +68,8 @@ int Ep_Interface::video_encode_init()
     param.height = 288;
     param.fps = 24;
     param.encoder_type = Encoder_Param::H264;
-    param.bitrate = 352 * 288 * 3 * 24;
+    param.bitrate = 352 * 288 * 24;
+    param.gop_len = 30;
 
     _video_send = new Nalu2Rtp_H264();
     static Video_Encoder::NALU_CB nalu_cb = std::bind(&Nalu2Rtp_H264::operator (), _video_send,

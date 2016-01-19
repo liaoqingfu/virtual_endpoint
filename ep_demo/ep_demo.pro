@@ -27,7 +27,7 @@ LIBS += -L../lib -lmy_video_device
 LIBS += -L$(TOOLKITS)/lib -lswscale -lavutil -lavcodec -lswresample
 LIBS += -L$(TOOLKITS)/lib  -lACE -lv4l2 -lv4lconvert
 
-LIBS += -L$(TOOLKITS)/lib -lGLEW -lGLU
+LIBS += -L$(TOOLKITS)/lib -lGLEW -lGLU -lx264 -lx265
 
 SOURCES += main.cpp\
         mainwindow.cpp

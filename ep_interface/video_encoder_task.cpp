@@ -66,9 +66,9 @@ int Video_Encoder_Task::operator ()(int w, int h, char **yuv, int *linesize)
         return -1;
     }
 
-    memcpy(encoder_buf->buf_0, yuv[0], w * linesize[0]);
-    memcpy(encoder_buf->buf_1, yuv[1], w * linesize[1] / 2);
-    memcpy(encoder_buf->buf_2, yuv[2], w * linesize[2] / 2);
+    memcpy(encoder_buf->buf_0, yuv[0], h * linesize[0]);
+    memcpy(encoder_buf->buf_1, yuv[1], h * linesize[1] / 2);
+    memcpy(encoder_buf->buf_2, yuv[2], h * linesize[2] / 2);
     encoder_buf->w = w;
     encoder_buf->h = h;
     encoder_buf->linesize[0] = linesize[0];

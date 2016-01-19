@@ -7,10 +7,7 @@
 
 Rtp2Nalu_H264::Rtp2Nalu_H264(Handler_Cb *handler_cb)
     :Rtp_Recv_Handler(handler_cb)
-    ,_nalu_len(0)
 {
-    _nalu_buf = new unsigned char[RTP_MAX_BUF_SIZE];
-    memset(_nalu_buf, 0, sizeof(RTP_MAX_BUF_SIZE) );
 }
 
 Rtp2Nalu_H264::~Rtp2Nalu_H264()
@@ -98,6 +95,8 @@ bool Rtp2Nalu_H264::rtp_parse(unsigned char *rtp_buf, int rtp_buf_len)
 
             memcpy(_nalu_buf+_nalu_len, nalu + nalu_header_len, nalu_len - nalu_header_len );
             _nalu_len += nalu_len - nalu_header_len;
+
+            ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:nalu_len = %d!\n"), __PRETTY_FUNCTION__, _nalu_len));
 
 //            out_buf_len = _nalu_len;
 //            memcpy(out_buf, _nalu_buf, out_buf_len);

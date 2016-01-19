@@ -85,7 +85,7 @@ bool Video_Render_Task::operator ()(unsigned char** yuv_buf, int w, int h, int *
         ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:yuv_buf or linesize is NULL!\n"), __PRETTY_FUNCTION__));
         return false;
     }
-    ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:linesize[0] = %d!\n"), __PRETTY_FUNCTION__, linesize[0]));
+    ACE_DEBUG((LM_DEBUG, ACE_TEXT("%s:linesize[0] = %d, w = %d!\n"), __PRETTY_FUNCTION__, linesize[0], w));
 
     YUV* yuv = (YUV*)_allocator.malloc();
     if(yuv_buf == NULL)
@@ -96,6 +96,7 @@ bool Video_Render_Task::operator ()(unsigned char** yuv_buf, int w, int h, int *
 
     yuv->width = w;
     yuv->height = h;
+
     yuv->linesize[0] = linesize[0];
     yuv->linesize[1] = linesize[1];
     yuv->linesize[2] = linesize[2];
